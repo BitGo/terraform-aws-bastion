@@ -5,8 +5,5 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 4.0.0"
     }
-    ignition = {
-      source = "terraform-providers/ignition"
-    }
   }
 }
