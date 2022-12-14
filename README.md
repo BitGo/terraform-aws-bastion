@@ -6,6 +6,8 @@
 
 Deploy a minimal, auto-healing, and immutable SSH Bastion host on AWS.
 
+SSH is configured to dynamically pull a list of authorized_keys from a public S3 bucket.
+
 ## Features ##
 
   * Automatically re-deploy via ASG and health checks
