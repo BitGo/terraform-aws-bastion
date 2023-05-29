@@ -29,10 +29,6 @@ resource "aws_launch_template" "bastion" {
   user_data     = base64encode(local.data)
   key_name      = var.key_name
 
-  iam_instance_profile {
-    name = var.iam_instance_profile
-  }
-
   monitoring {
     enabled = true
   }

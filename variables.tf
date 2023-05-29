@@ -22,10 +22,6 @@ variable "associate_public_ip_address" {
   default = true
 }
 
-variable "iam_instance_profile" {
-  default = ""
-}
-
 variable "additional_security_groups" {
   description = "A list of additional security groups to assign to the bastion instance"
   type        = list(string)
