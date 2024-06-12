@@ -51,7 +51,7 @@ module "bastion" {
   source = "github.com/BitGo/terraform-aws-bastion"
   version = "0.0.1"
   name = "bastion-abc"
-  instance_type = "t2.nano"
+  instance_type = "t3.nano"
   authorized_keys_directory = "keys/ssh/"
   authorized_key_names = ["alice", "bob", "mallory"]
   allowed_cidrs = ["0.0.0.0/0"]

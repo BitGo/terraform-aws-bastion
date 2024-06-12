@@ -3,7 +3,7 @@ variable "name" {
 }
 
 variable "instance_type" {
-  default = "t2.nano"
+  default = "t3.nano"
 }
 
 variable "authorized_keys_directory" {
@@ -33,13 +33,13 @@ variable "allowed_cidrs" {
 }
 
 variable "allowed_egress_cidrs" {
-  type = list(string)
+  type    = list(string)
   default = ["0.0.0.0/0"]
 }
 
 variable "allowed_ipv6_egress_cidrs" {
- type = list(string)
- default = ["::/0"]
+  type    = list(string)
+  default = ["::/0"]
 }
 
 variable "create_egress_rule" {
