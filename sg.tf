@@ -12,7 +12,7 @@ data "aws_iam_policy_document" "s3_bucket_access" {
 
     principals {
       type        = "AWS"
-      identifiers = ["*"]
+      identifiers = [aws_iam_role.bastion.arn]
     }
 
     actions = ["s3:GetObject"]
@@ -23,7 +23,19 @@ data "aws_iam_policy_document" "s3_bucket_access" {
 
 data "aws_region" "current" {}
 
+# IAM is eventually consistent: EC2's endpoint-policy validation can reject a
+# just-created role ARN as an unknown principal with "InvalidPolicyDocument"
+# if the policy is applied in the same terraform run that creates the role.
+# This sleep gives the role time to propagate before the endpoint policy
+# (which references aws_iam_role.bastion.arn) is created/updated.
+resource "time_sleep" "wait_for_bastion_role" {
+  depends_on      = [aws_iam_role.bastion]
+  create_duration = "10s"
+}
+
 resource "aws_vpc_endpoint" "s3_bucket" {
+  depends_on = [time_sleep.wait_for_bastion_role]
+
   vpc_id       = var.vpc_id
   service_name = "com.amazonaws.${data.aws_region.current.name}.s3"
   policy       = data.aws_iam_policy_document.s3_bucket_access.json
