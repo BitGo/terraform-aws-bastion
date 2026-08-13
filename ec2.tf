@@ -17,7 +17,13 @@ data "aws_ami" "flatcar" {
 }
 
 locals {
-  data = jsonencode(jsondecode(templatefile("${path.module}/linux-config/machine.tpl", { allowed_users = var.allowed_users, ssh_port = var.ssh_port, aws_s3_bucket = aws_s3_bucket_website_configuration.ssh_public_keys.website_endpoint })))
+  data = jsonencode(jsondecode(templatefile("${path.module}/linux-config/machine.tpl", {
+    allowed_users = var.allowed_users
+    ssh_port      = var.ssh_port
+    aws_s3_bucket = aws_s3_bucket.ssh_public_keys.bucket
+    aws_s3_key    = aws_s3_object.ssh_public_keys.key
+    aws_region    = data.aws_region.current.name
+  })))
 }
 
 // Just in case something goes wrong, the AMI ID for us-west-2 flatcar is 'ami-0bb54692374ac10a7'
@@ -28,6 +34,10 @@ resource "aws_launch_template" "bastion" {
   instance_type = var.instance_type
   user_data     = base64encode(local.data)
   key_name      = var.key_name
+
+  iam_instance_profile {
+    arn = aws_iam_instance_profile.bastion.arn
+  }
 
   monitoring {
     enabled = true
