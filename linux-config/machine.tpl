@@ -28,7 +28,7 @@
                  AllowUsers ${join(" ", allowed_users)}
                  AuthenticationMethods publickey
                  AuthorizedKeysCommandUser nobody
-                 AuthorizedKeysCommand /etc/ssh/authorized_keys.sh
+                 AuthorizedKeysCommand /bin/bash /etc/ssh/authorized_keys.sh
                  PermitRootLogin no
                  PermitTunnel yes
                  StreamLocalBindUnlink yes
