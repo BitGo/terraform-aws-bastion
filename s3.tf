@@ -2,11 +2,6 @@ resource "aws_s3_bucket" "ssh_public_keys" {
   bucket_prefix = "ssh-keys-"
 }
 
-resource "aws_s3_bucket_acl" "ssh_public_keys" {
-  bucket = aws_s3_bucket.ssh_public_keys.id
-  acl    = "private"
-}
-
 resource "aws_s3_bucket_policy" "ssh_public_keys" {
   bucket = aws_s3_bucket.ssh_public_keys.id
 
@@ -41,5 +36,4 @@ resource "aws_s3_object" "ssh_public_keys" {
       "# ${name}\n${file("${var.authorized_keys_directory}/${name}.pub")}\n"
     ]
   )
-  acl = "private"
 }
